@@ -1,4 +1,30 @@
 const API_BASE = "https://api.binance.com/api/v3/klines";
+const INTERVAL_MAP = {
+  "10m": { baseInterval: "5m", factor: 2 },
+};
+
+function resolveInterval(interval) {
+  return INTERVAL_MAP[interval] || { baseInterval: interval, factor: 1 };
+}
+
+function aggregateCandles(candles, factor) {
+  if (factor <= 1) return candles;
+
+  const aggregated = [];
+  for (let i = 0; i + factor <= candles.length; i += factor) {
+    const chunk = candles.slice(i, i + factor);
+    aggregated.push({
+      time: chunk[0].time,
+      open: chunk[0].open,
+      high: Math.max(...chunk.map((candle) => candle.high)),
+      low: Math.min(...chunk.map((candle) => candle.low)),
+      close: chunk[chunk.length - 1].close,
+      volume: chunk.reduce((sum, candle) => sum + candle.volume, 0),
+    });
+  }
+
+  return aggregated;
+}
 
 function normalizeToBinancePair(symbol) {
   const clean = (symbol || "EURUSD").toUpperCase().replace(/[^A-Z]/g, "");
@@ -11,10 +37,11 @@ function normalizeToBinancePair(symbol) {
 
 async function fetchCandles({ symbol, interval, limit = 120 }) {
   const pair = normalizeToBinancePair(symbol);
+  const { baseInterval, factor } = resolveInterval(interval);
   const url = new URL(API_BASE);
   url.searchParams.set("symbol", pair);
-  url.searchParams.set("interval", interval);
-  url.searchParams.set("limit", String(limit));
+  url.searchParams.set("interval", baseInterval);
+  url.searchParams.set("limit", String(limit * factor));
 
   const response = await fetch(url.toString());
   if (!response.ok) {
@@ -23,7 +50,7 @@ async function fetchCandles({ symbol, interval, limit = 120 }) {
   }
 
   const rows = await response.json();
-  return rows.map((candle) => ({
+  const normalized = rows.map((candle) => ({
     time: candle[0],
     open: Number(candle[1]),
     high: Number(candle[2]),
@@ -31,6 +58,8 @@ async function fetchCandles({ symbol, interval, limit = 120 }) {
     close: Number(candle[4]),
     volume: Number(candle[5]),
   }));
+
+  return aggregateCandles(normalized, factor).slice(-limit);
 }
 
 chrome.runtime.onInstalled.addListener(() => {
