@@ -1,16 +1,53 @@
-## Hi there 👋
+## Telegram-бот: изображения и сигналы
 
-<!--
-**TMPROGER/TMPROGER** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+Telegram-бот, который:
+- генерирует изображения по текстовому промпту,
+- автоматически распознаёт валютную пару/тикер из сообщений,
+- анализирует рынок и выдаёт торговый сигнал по подходящему моменту входа.
 
-Here are some ideas to get you started:
+## Возможности
+- Генерация изображений по любому текстовому промпту.
+- Авто-распознавание символов (например `EURUSD`, `GBPUSD`, `BTCUSDT`, `ETH-USD`).
+- Команда `/signal` анализирует актив и даёт сигнал: `ПОКУПКА`, `ПРОДАЖА` или `ОЖИДАНИЕ`.
+- Бот запоминает последний актив в чате и использует его в следующих анализах.
+- Команды `/start`, `/help`, `/model`, `/signal`, `/active`.
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+> ⚠️ Сигналы основаны на техническом анализе (SMA/RSI) и не являются финансовой рекомендацией.
+
+## Быстрый запуск
+1. Создайте бота через `@BotFather` и получите `TELEGRAM_BOT_TOKEN`.
+2. Получите API-ключ сервиса генерации изображений (`IMAGE_API_KEY`).
+3. Скопируйте `.env.example` в `.env` и заполните переменные.
+4. Установите зависимости и запустите:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python bot.py
+```
+
+## Переменные окружения
+- `TELEGRAM_BOT_TOKEN` — токен Telegram-бота.
+- `IMAGE_API_KEY` — ключ API провайдера изображений.
+- `IMAGE_API_BASE_URL` — базовый URL OpenAI-compatible API (по умолчанию `https://api.openai.com/v1`).
+- `IMAGE_MODEL` — идентификатор модели (например, `gpt-image-1`).
+- `IMAGE_RESPONSE_FORMAT` — формат результата (`png`, `jpeg`, `webp`).
+- `IMAGE_SIZE` — размер изображения (например, `1024x1024`).
+- `SIGNAL_INTERVAL` — интервал свечей для анализа (например `15m`).
+- `SIGNAL_RANGE` — диапазон истории для анализа (например `5d`).
+
+## Как использовать сигналы
+- Отправьте `EURUSD` или `BTCUSDT` — бот автоматически запомнит актив.
+- Выполните `/signal` — бот проанализирует текущий актив.
+- Либо сразу: `/signal EURUSD`.
+- `/active` показывает, какой актив сейчас выбран в чате.
+
+## Как зайти в бота через приложение Telegram
+1. Откройте Telegram на телефоне или ПК.
+2. В поиске введите username вашего бота из `@BotFather`.
+3. Откройте чат и нажмите **Start / Запустить**.
+4. Убедитесь, что скрипт `python bot.py` запущен на вашем сервере/ПК.
+5. Напишите сообщение боту.
+
+Прямая ссылка: `https://t.me/<username_бота>`.
