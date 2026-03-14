@@ -51,3 +51,34 @@ python bot.py
 5. Напишите сообщение боту.
 
 Прямая ссылка: `https://t.me/<username_бота>`.
+
+---
+
+## Pocket Option Extension: Продвинутый Аналитик Сигналов v2.0
+
+В репозитории добавлен отдельный модуль расширения в папке `pocket-option-ext/`:
+
+```text
+pocket-option-ext/
+├── manifest.json
+├── background.js
+├── content.js
+├── styles.css
+├── market-analyzer.js
+├── indicators.js
+└── patterns.js
+```
+
+### Что реализовано
+- Мультитаймфреймовый анализ для `3m`, `5m`, `10m`, `15m`.
+- Комбинированные методы: индикаторы (RSI/MACD/Stochastic/Bollinger), Price Action, уровни, тренд EMA.
+- Типы сигналов: `CALL`, `PUT`, `NEUTRAL`, а также `STRONG` при совпадении 3+ методов.
+- Вкладка/панель `🔥 СИГНАЛЫ` с обновлением каждые 5–10 секунд и цветовой индикацией.
+- Получение свечей через Binance API в background service worker.
+
+### Как загрузить расширение локально
+1. Откройте `chrome://extensions`.
+2. Включите **Режим разработчика**.
+3. Нажмите **Загрузить распакованное расширение**.
+4. Выберите папку `pocket-option-ext`.
+5. Откройте сайт Pocket Option и проверьте появление панели справа.

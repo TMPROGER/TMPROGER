@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "Evgeniy Sokolov — PO Trader Panel",
+  "description": "Продвинутый аналитик сигналов v2.0 для Pocket Option.",
+  "version": "2.0.0",
+  "permissions": ["storage", "alarms"],
+  "host_permissions": [
+    "https://api.binance.com/*",
+    "https://*.pocketoption.com/*",
+    "https://pocketoption.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.pocketoption.com/*", "https://pocketoption.com/*"],
+      "js": ["indicators.js", "patterns.js", "market-analyzer.js", "content.js"],
+      "css": ["styles.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["styles.css"],
+      "matches": ["https://*.pocketoption.com/*", "https://pocketoption.com/*"]
+    }
+  ]
+}
