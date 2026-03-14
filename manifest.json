@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Pocket Option Signal Assistant",
+  "version": "1.0.0",
+  "description": "3m/5m market signal helper with multi-check confidence scoring.",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": [
+    "https://api.binance.com/*",
+    "https://*.pocketoption.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Signal Assistant",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.pocketoption.com/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
