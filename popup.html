@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Signal Assistant</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="card">
+    <h1>Signal Assistant</h1>
+
+    <label>
+      Symbol
+      <input id="symbol" type="text" value="BTCUSDT" placeholder="BTCUSDT" />
+    </label>
+
+    <label>
+      Horizon
+      <select id="horizon">
+        <option value="3m">3 minutes</option>
+        <option value="5m">5 minutes</option>
+      </select>
+    </label>
+
+    <label>
+      Confidence threshold (%)
+      <input id="threshold" type="number" min="50" max="95" value="70" />
+    </label>
+
+    <button id="analyze">Analyze now</button>
+
+    <section id="result" class="result muted">
+      Waiting for analysis...
+    </section>
+
+    <p class="note">No strategy can guarantee positive results. Use risk management.</p>
+  </main>
+
+  <script src="popup.js"></script>
+</body>
+</html>
